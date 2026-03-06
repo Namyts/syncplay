@@ -2033,8 +2033,7 @@ class SyncplayPlaylist():
         position = self.getGlobalPosition()
         playlistFile.write(f"\n#EXTVLCOPT:syncplay-position={position:.3f}\n")
         playlistFile.write(playlistToSave)
-        self._ui.showMessage(f"Playlist saved as {path}")
-
+        self._ui.showMessage("Playlist saved as {}".format(path))
 
     def playlistNeedsRestoring(self, files, username):
         if self._client.playlistMayNeedRestoring:
