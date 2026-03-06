@@ -2027,10 +2027,14 @@ class SyncplayPlaylist():
                 self.changePlaylist(newPlaylist, username=None, resetIndex=True)
 
     def savePlaylistToFile(self, path):
-        with open(path, 'w') as playlistFile:
-            playlistToSave = utils.getListAsMultilineString(self._playlist)
-            playlistFile.write(playlistToSave)
-            self._ui.showMessage("Playlist saved as {}".format(path)) # TODO: Move to messages_en
+    with open(path, 'w') as playlistFile:
+        remainingPlaylist = self._playlist[self._playlistIndex:]
+        playlistToSave = utils.getListAsMultilineString(remainingPlaylist)
+        position = self.getGlobalPosition()
+        playlistFile.write(f"\n#EXTVLCOPT:syncplay-position={position:.3f}\n")
+        playlistFile.write(playlistToSave)
+        self._ui.showMessage(f"Playlist saved as {path}")
+
 
     def playlistNeedsRestoring(self, files, username):
         if self._client.playlistMayNeedRestoring:
