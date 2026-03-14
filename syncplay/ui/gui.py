@@ -1160,7 +1160,7 @@ class MainWindow(QtWidgets.QMainWindow):
             defaultdirectory = currentdirectory
         else:
             defaultdirectory = self.getInitialMediaDirectory()
-        browserfilter = "Playlist (*.m3u)"
+        browserfilter = "Playlist (*.m3u8)"
         filepath, filtr = QtWidgets.QFileDialog.getSaveFileName(
             self, "Save playlist to file", defaultdirectory,
             browserfilter, "", options) # TODO: Move to messages_en

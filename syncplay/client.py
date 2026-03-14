@@ -2021,19 +2021,23 @@ class SyncplayPlaylist():
 
         with open(path) as f:
             newPlaylist = f.read().splitlines()
+            if path.lower().endswith(".m3u8"):
+                newPlaylist = [
+                    line for line in newPlaylist if line.strip() and not line.startswith("#")
+                ]
             if shuffle:
                 random.shuffle(newPlaylist)
             if newPlaylist:
                 self.changePlaylist(newPlaylist, username=None, resetIndex=True)
 
     def savePlaylistToFile(self, path):
-    with open(path, 'w') as playlistFile:
-        remainingPlaylist = self._playlist[self._playlistIndex:]
-        playlistToSave = utils.getListAsMultilineString(remainingPlaylist)
-        position = self.getGlobalPosition()
-        playlistFile.write(f"\n#EXTVLCOPT:syncplay-position={position:.3f}\n")
-        playlistFile.write(playlistToSave)
-        self._ui.showMessage("Playlist saved as {}".format(path))
+        with open(path, 'w') as playlistFile:
+            remainingPlaylist = self._playlist[self._playlistIndex:]
+            playlistToSave = utils.getListAsMultilineString(remainingPlaylist)
+            position = self.getGlobalPosition()
+            playlistFile.write(f"\n#EXTVLCOPT:syncplay-position={position:.3f}\n")
+            playlistFile.write(playlistToSave)
+            self._ui.showMessage("Playlist saved as {}".format(path))
 
     def playlistNeedsRestoring(self, files, username):
         if self._client.playlistMayNeedRestoring:
